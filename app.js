@@ -24,9 +24,9 @@ app.post('/api/users', async(req,res)=>{
     const passwordHash = await bcrypt.hash(password, saltRounds)
 
     const newUser = new User({
-        username:username,
-        password:passwordHash,
-        email:email
+        username,
+        passwordHash,
+        email
     })
     await newUser.save()
     res.status(201).send(newUser)

@@ -6,7 +6,7 @@ require('express-async-errors')
 userRouter.post('/', async(req,res)=>{
     const {password, username, email} = req.body
         if(!password || password.length<8){
-        return res.status(400).send({error: 'length error: Password must be at least 8 chars '})
+        return res.status(400).send({error: 'Password length must be at least 8 chars '})
     }
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)

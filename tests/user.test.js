@@ -30,11 +30,7 @@ describe('User endpoints', () => {
 
             assert.strictEqual(response.body.error, expectedErrorMessage)
         }
-        test('New user added correctly', async () => {
-            await api.post(baseUrl)
-                .send(newUser)
-                .expect(201)
-        })
+
         test('No duplicated usernames allowed', async () => {
             await api.post(baseUrl)
                 .send(newUser)
@@ -87,7 +83,11 @@ describe('User endpoints', () => {
             const user = {}
             const response = await api.post(baseUrl).send(user).expect(400)
         })
-
+        test('New user added correctly', async () => {
+            await api.post(baseUrl)
+                .send(newUser)
+                .expect(201)
+        })
 
     })
     after(async () => {

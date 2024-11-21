@@ -11,8 +11,10 @@ const bcrypt = require('bcrypt')
 app.use(express.json())
 app.use(middleware.logger)
 
-mongoose.connect(process.env.MONGO_URI)
-.then(()=> console.log(`succesful connnection to ${process.env.MONGO_URI}`))
+const connectionString = process.env.NODE_ENV === 'test' ? process.env.MONGO_URI : process.env.MONGO_URI_TEST
+
+mongoose.connect(connectionString)
+.then(()=> console.log(`succesful connnection to ${connectionString}`))
 .catch((err)=> console.log(err))
 
 app.post('/api/users', async(req,res)=>{

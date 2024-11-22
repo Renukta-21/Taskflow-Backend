@@ -12,11 +12,12 @@ const taskSchema = new mongoose.Schema({
         default:false  
     },
     category:{
-        type:String
+        type:mongoose.Types.ObjectId,
+        ref:'Category'
     },
     user:{
         type: mongoose.Types.ObjectId,
-        ref:'user',
+        ref:'User',
     },
     createdAt:{
         type:Date,

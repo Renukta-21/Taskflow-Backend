@@ -13,6 +13,7 @@ mongoose.connect(connectionString)
 .then(()=> console.log(`succesful connnection to ${connectionString}`))
 .catch((err)=> console.log(err))
 
+console.log(connectionString)
 app.use(cors())
 app.use(express.json())
 app.use(middleware.logger)

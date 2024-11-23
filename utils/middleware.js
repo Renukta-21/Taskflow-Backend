@@ -6,7 +6,7 @@ const logger = (req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
-    console.log(err.message)
+    
     if (err.code === 11000) {
         if(err.message.includes('username')){
             res.status(409).send('Username already taken')
@@ -15,8 +15,12 @@ const errorHandler = (err, req, res, next) => {
         }
     } else if (err.name === "ValidationError") {
         res.status(400).send({ error: err.message })
-    } else if (err) {
-        
+    } else if (err.name==='CastError') {
+        if(err.message.includes('ObjectId')){
+            return res.status(400).send({error:'Invalid ObjectId format: Id is not a valid string'})
+        }    
+    }else if(err){
+        console.log(err)
     }
 
 }

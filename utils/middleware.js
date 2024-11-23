@@ -6,12 +6,17 @@ const logger = (req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
+    console.log(err.message)
     if (err.code === 11000) {
-        res.status(409).send('Username already taken')
+        if(err.message.includes('username')){
+            res.status(409).send('Username already taken')
+        }else if(err.message.includes('categories')){
+            res.status(409).send({error:'Category already exists'})
+        }
     } else if (err.name === "ValidationError") {
         res.status(400).send({ error: err.message })
     } else if (err) {
-        console.log(err)
+        
     }
 
 }

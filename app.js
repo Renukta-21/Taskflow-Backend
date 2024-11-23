@@ -7,6 +7,7 @@ const middleware = require('./utils/middleware')
 const { default: mongoose } = require('mongoose')
 const userRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
+const categoriesRouter = require('./controllers/category')
 
 const connectionString = process.env.NODE_ENV === 'test' ? process.env.MONGO_URI : process.env.MONGO_URI_TEST
 mongoose.connect(connectionString)
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(middleware.logger)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/categories', categoriesRouter)
 
 app.use(middleware.errorHandler)
 

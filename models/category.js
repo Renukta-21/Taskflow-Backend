@@ -5,6 +5,10 @@ const categorySchema = new mongoose.Schema({
         required:true,
         unique:true
     },
+    icon:{
+        type:String,
+        required:true
+    },
     user:{
         type: mongoose.Types.ObjectId,
         ref:'User'

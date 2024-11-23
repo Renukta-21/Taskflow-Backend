@@ -2,8 +2,8 @@ const categoriesRouter = require('express').Router()
 const Category = require('../models/category')
 
 categoriesRouter.post('/', async(req,res)=>{
-    const {name, user} = req.body
-    const newCategory = new Category({name, user})
+    const {name, icon, user} = req.body
+    const newCategory = new Category({name,icon, user})
     await newCategory.save()
     res.status(201).send(newCategory)
 })

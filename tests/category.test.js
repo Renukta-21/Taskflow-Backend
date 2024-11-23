@@ -7,13 +7,14 @@ const Category = require('../models/category')
 const api = supertest(app)
 
 const baseURL = '/api/categories'
-
 let firstCat
 const firstCategory = {
     name:"Excercise",
+    icon:'🔥'
 }
 const newCategory = {
-    name:'Study'
+    name:'Study',
+    icon:'🔥'
 }
 
 describe('Category Routes', ()=>{
@@ -25,7 +26,7 @@ describe('Category Routes', ()=>{
 
     test('No duplicated categories allowed', async()=>{
         const response = await api.post(baseURL)
-        .send({name:"Excercise"})
+        .send({name:"Excercise",icon:'🔥'})
         .expect(409)
 
         assert.ok(response.body.error.includes('Category already exists'))
@@ -52,13 +53,12 @@ describe('Category Routes', ()=>{
     })
     test('Returns 400 if name is missing when creating a category', async () => {
         const response = await api.post(baseURL)
-            .send({}) 
+            .send({icon:'🔥'}) 
             .expect(400);  
         
         assert.ok(response.body.error.includes('category validation failed: name: Path `name` is required.'));
     });
 
-    
     after(async()=>{
         await mongoose.connection.close()
     })

@@ -5,6 +5,7 @@ const taskSchema = new mongoose.Schema({
         required:true
     },
     description:{
+        required:true,
         type:String
     },
     completed:{
@@ -12,11 +13,13 @@ const taskSchema = new mongoose.Schema({
         default:false  
     },
     category:{
-        type:mongoose.Types.ObjectId,
+        required:true,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'Category'
     },
     user:{
-        type: mongoose.Types.ObjectId,
+        required:true,
+        type: mongoose.Schema.Types.ObjectId,
         ref:'User',
     },
     createdAt:{

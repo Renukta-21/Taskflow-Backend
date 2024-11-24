@@ -6,7 +6,7 @@ const logger = (req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
-    
+    console.log(err.message)
     if (err.code === 11000) {
         if(err.message.includes('username')){
             res.status(409).send('Username already taken')

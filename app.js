@@ -9,6 +9,7 @@ const userRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
 const categoriesRouter = require('./controllers/category')
 const tasksRouter = require('./controllers/tasks')
+const resetRouter = require('./controllers/resetRouter')
 
 const connectionString = process.env.NODE_ENV === 'test' ? process.env.MONGO_URI : process.env.MONGO_URI_TEST
 mongoose.connect(connectionString)
@@ -23,6 +24,7 @@ app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/categories',middleware.tokenExtractor, categoriesRouter, )
 app.use('/api/tasks', middleware.tokenExtractor, tasksRouter)
+app.use('/api/reset', resetRouter)
 
 app.use(middleware.errorHandler)
 

@@ -12,7 +12,7 @@ const api = supertest(app)
 const baseURL = '/api/tasks'
 const categURL = '/api/categories'
 
-let firstCategory, newTask, authorization
+let firstCategory, newTask, authorization,tasksResponse
 const newCategory = {
   name: 'Excercise',
   icon: '🔥',
@@ -49,11 +49,17 @@ describe('Tasks Routes', () => {
       .send(newTask)
       .expect(201)
 
-    const tasksResponse = await api
+    tasksResponse = await api
       .get(baseURL)
       .set('Authorization', authorization)
       .expect(200)
       console.log(tasksResponse.body)
+  })
+
+  test('user can delete a task', async()=>{
+    const response = await api.delete(`${baseURL}/${tasksResponse.body[0]._id}`)
+    .set('Authorization', authorization)
+    .expect(204)
   })
 
   after(async () => {

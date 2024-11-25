@@ -11,7 +11,8 @@ categoriesRouter.post('/', async (req, res) => {
 })
 
 categoriesRouter.get('/', async (req, res) => {
-  const categories = await Category.find({})
+  const user = req.user
+  const categories = await Category.find({user: user._id})
   if (!categories) {
     return res.status(404).send({ error: 'No categories found' })
   }

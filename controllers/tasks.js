@@ -17,4 +17,13 @@ tasksRouter.post('/', async(req, res)=>{
     await newTask.save()
     res.status(201).send(newTask)
 })
+
+tasksRouter.delete('/:id', async(req,res)=>{
+    const {id} = req.params
+    const task = Task.findByIdAndDelete(id)
+    if(!task){
+        return res.status(404).send({error:'task not found'})
+    }
+    res.send(204)
+})
 module.exports = tasksRouter

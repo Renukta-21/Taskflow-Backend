@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const logger = (req, res, next) => {
-  
-    if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== 'test') {
     console.log(`${req.method} --->   ${req.url}`)
   }
   next()
@@ -10,9 +9,16 @@ const tokenExtractor = async (req, res, next) => {
   const authorizationHeader = req.get('Authorization')
   if (authorizationHeader && authorizationHeader.startsWith('Bearer')) {
     const token = authorizationHeader.split(' ')[1]
-    console.log(token)
-  }else{
-    return res.status(400).send({error:'Authorization header missing or malformed'})
+    try {
+        const validToken = jwt.verify(token, process.env.SECRET_JWT_KEY)
+        console.log(validToken)
+    } catch (error) {
+        next(error)
+    }
+  } else {
+    return res
+      .status(400)
+      .send({ error: 'Authorization header missing or malformed' })
   }
 
   next()
@@ -33,8 +39,8 @@ const errorHandler = (err, req, res, next) => {
         .status(400)
         .send({ error: 'Invalid ObjectId format: Id is not a valid string' })
     }
-  } else if (err) {
-    console.log(err)
+  } else if (err.name ==='JsonWebTokenError') {
+    res.status(400).send('Invalid token')
   }
 }
 module.exports = { logger, errorHandler, tokenExtractor }

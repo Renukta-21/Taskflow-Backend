@@ -25,6 +25,7 @@ loginRouter.post('/', async(req,res)=>{
    }, process.env.SECRET_JWT_KEY)
 
    res.status(200).send({token, username:user.username})
+
 })
 
 module.exports = loginRouter

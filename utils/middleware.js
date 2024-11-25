@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 const logger = (req, res, next) => {
   if (process.env.NODE_ENV !== 'test') {
     console.log(`${req.method} --->   ${req.url}`)
@@ -11,7 +12,13 @@ const tokenExtractor = async (req, res, next) => {
     const token = authorizationHeader.split(' ')[1]
     try {
         const validToken = jwt.verify(token, process.env.SECRET_JWT_KEY)
-        console.log(validToken)
+        
+        const user = await User.findById(validToken.userID)
+        
+        if(!user){
+          return res.status(404).send({error: 'User not found'})
+        }
+        req.user = user
     } catch (error) {
         next(error)
     }

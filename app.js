@@ -19,11 +19,10 @@ console.log(connectionString)
 app.use(cors())
 app.use(express.json())
 app.use(middleware.logger)
-app.use(middleware.tokenExtractor)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/categories', categoriesRouter)
-app.use('/api/tasks', tasksRouter)
+app.use('/api/categories',middleware.tokenExtractor, categoriesRouter, )
+app.use('/api/tasks', middleware.tokenExtractor, tasksRouter)
 
 app.use(middleware.errorHandler)
 

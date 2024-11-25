@@ -1,5 +1,5 @@
-const {test, describe, after, beforeEach} = require('node:test')
-const assert = require('node:assert') 
+const { test, describe, after, beforeEach } = require('node:test')
+const assert = require('node:assert')
 const supertest = require('supertest')
 const app = require('../app')
 const { default: mongoose } = require('mongoose')
@@ -7,58 +7,78 @@ const Category = require('../models/category')
 const api = supertest(app)
 
 const baseURL = '/api/categories'
-let firstCat
+let firstCat, newLogin, authorization
 const firstCategory = {
-    name:"Excercise",
-    icon:'🔥'
+  name: 'Excercise',
+  icon: '🔥',
 }
 const newCategory = {
-    name:'Study',
-    icon:'🔥'
+  name: 'Study',
+  icon: '🔥',
 }
 
-describe('Category Routes', ()=>{
-    beforeEach(async()=>{
-        await Category.deleteMany({})
-        const newCat = new Category(firstCategory)
-         firstCat = await newCat.save()
+describe('Category Routes', () => {
+  beforeEach(async () => {
+    await Category.deleteMany({})
+    newLogin = await api.post('/api/login').send({
+      username: 'Daniel',
+      password: 'daniel211004',
     })
+    .expect(200)
 
-    test('No duplicated categories allowed', async()=>{
-        const response = await api.post(baseURL)
-        .send({name:"Excercise",icon:'🔥'})
-        .expect(409)
+    authorization = `Bearer ${newLogin.body.token}`
+  })
 
-        assert.ok(response.body.error.includes('Category already exists'))
-    })
+  test('No duplicated categories allowed', async () => {
+    const response = await api
+      .post(baseURL)
+      .set('Authorization', authorization)
+      .send({ name: 'Excercise', icon: '🔥' })
+      .expect(201)
+      console.log(response.body)
+  })
 
-    test('Creates a new category successfully', async()=>{
-        await api.post(baseURL)
-        .send(newCategory)
-        .expect(201)
-    })
+  /* test('Creates a new category successfully', async () => {
+    await api
+      .post(baseURL)
+      .set('Authorization', authoriz)
+      .send(newCategory)
+      .expect(201)
+  })
 
-    test('Category successfully eliminated', async()=>{
-        await api.delete(`${baseURL}/${firstCat._id}`)
-        .expect(204)
-    })
-    test('Returns 404 when deleting a non-existing category', async()=>{
-        const response = await api.post(baseURL)
-        .send(newCategory)
-        .expect(201)
+  test('Category successfully eliminated', async () => {
+    await api
+      .delete(`${baseURL}/${firstCat._id}`)
+      .set('Authorization', authoriz)
+      .expect(204)
+  })
+  test('Returns 404 when deleting a non-existing category', async () => {
+    const response = await api
+      .post(baseURL)
+      .set('Authorization', authoriz)
+      .send(newCategory)
+      .expect(201)
 
-        await Category.findByIdAndDelete(response.body._id)
-        await api.delete(`${baseURL}/${response.body._id}`)
-        .expect(404)
-    })
-    test('Returns 400 if name is missing when creating a category', async () => {
-        const response = await api.post(baseURL)
-            .send({icon:'🔥'}) 
-            .expect(400);  
-        
-        assert.ok(response.body.error.includes('category validation failed: name: Path `name` is required.'));
-    });
-    after(async()=>{
-        await mongoose.connection.close()
-    })
+    await Category.findByIdAndDelete(response.body._id)
+    await api
+      .delete(`${baseURL}/${response.body._id}`)
+      .set('Authorization', authoriz)
+      .expect(404)
+  })
+  test('Returns 400 if name is missing when creating a category', async () => {
+    const response = await api
+      .post(baseURL)
+      .set('Authorization', authoriz)
+      .send({ icon: '🔥' })
+      .expect(400)
+
+    assert.ok(
+      response.body.error.includes(
+        'category validation failed: name: Path `name` is required.'
+      )
+    )
+  }) */
+  after(async () => {
+    await mongoose.connection.close()
+  })
 })

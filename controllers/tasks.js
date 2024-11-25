@@ -2,8 +2,8 @@ const tasksRouter = require('express').Router()
 const Task = require('../models/tasks')
 
 tasksRouter.get('/', async(req,res)=>{
-    const {userId} = req.body
-    const tasks = await Task.find({})
+    const user = req.user
+    const tasks = await Task.find({ user: user._id} )
     if(!tasks){
         return res.status(404).send({error: 'No user tasks found'})
     }
@@ -11,8 +11,9 @@ tasksRouter.get('/', async(req,res)=>{
 })
 
 tasksRouter.post('/', async(req, res)=>{
-    const {user, title, description, completed, category} = req.body
-    const newTask = new Task({title, description, completed, category})
+    const {title, description, completed, category} = req.body
+    const user = req.user
+    const newTask = new Task({user: user._id, title, description, completed, category})
     await newTask.save()
     res.status(201).send(newTask)
 })

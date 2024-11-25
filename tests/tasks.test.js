@@ -16,12 +16,13 @@ const newCategory = {
     name:"Excercise",
     icon:'🔥'
 }
-
+const authoriz = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmllbCIsInVzZXJJRCI6IjY3NDNmOWE3YjM1ZGQ3YjQ3YjA1MjkwMyIsImlhdCI6MTczMjUxNDcxNX0.h5dcrd0_ysb6TQIVDb0ZmajoVAw4Y3Et29W_Qihqj9I'
 describe('Tasks Routes', ()=>{
     beforeEach(async()=>{
         await Category.deleteMany({})
         await Task.deleteMany({})
         firstCategory =  await api.post(categURL)
+        .set('Authorization', authoriz)
         .send(newCategory)
         .expect(201)
 
@@ -33,18 +34,17 @@ describe('Tasks Routes', ()=>{
         }
     })
     test('User can add new tasks', async()=>{
-        const response = await api.get(categURL)
-        .expect(200)
-
         const responseNewTask = await api.post(baseURL)
+        .set('Authorization', authoriz)
         .send(newTask)
         .expect(201)
-        console.log(response.body)
 
         const tasksResponse = await api.get(baseURL)
+        .set('Authorization', authoriz)
         .expect(200)
-
-        console.log(tasksResponse.body)
+        /* console.log(responseNewTask.body)
+        console.log(tasksResponse.body) */
+        /* assert.deepStrictEqual(responseNewTask.body, tasksResponse.body[0]) */
     })
     
     

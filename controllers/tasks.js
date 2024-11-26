@@ -15,7 +15,13 @@ tasksRouter.post('/', async(req, res)=>{
     const user = req.user
     const newTask = new Task({user: user._id, title, description, completed, category})
     await newTask.save()
-    res.status(201).send(newTask)
+    user.tasks = user.tasks.concat(newTask._id)
+    await user.save()
+
+    res.status(201).send({
+        message: 'Tarea agregada exitosamente',
+        task: newTask
+    })
 })
 
 tasksRouter.delete('/:id', async(req,res)=>{

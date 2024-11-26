@@ -22,7 +22,7 @@ describe('Tasks Routes', () => {
     await Category.deleteMany({})
     await Task.deleteMany({})
     const newLogin = await api.post('/api/login').send({
-      username: 'Daniel',
+      username: 'daniel',
       password: 'daniel211004',
     })
     .expect(200)

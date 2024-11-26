@@ -45,6 +45,12 @@ describe('Tasks Routes', () => {
       description: 'Jog 15km in 30 minutes',
       category: firstCategory.body._id
     }
+
+    newTask2={
+      title: 'Coding Project',
+      description: 'Finish coding taskflow backend',
+      category: firstCategory.body._id
+    }
   })
   
   test('User can add new tasks', async () => {
@@ -52,7 +58,11 @@ describe('Tasks Routes', () => {
     .set('Authorization', authorization)
     .send(newTask)
     .expect(201)
-    console.log(response.body)
+    const response2 = await api.post(baseURL)
+    .set('Authorization', authorization)
+    .send(newTask2)
+    .expect(201)
+
      userResponse = await api.get(categURL)
     .set('Authorization', authorization)
     .expect(200)

@@ -18,9 +18,8 @@ tasksRouter.post('/', async(req, res)=>{
     await newTask.save()
     const categoryModel = await Category.findById(category)
     categoryModel.tasks= categoryModel.tasks.concat(newTask._id)
-    categoryModel.save()
+    await categoryModel.save()
     
-
     res.status(201).send(newTask)
 })
 

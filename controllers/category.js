@@ -13,7 +13,7 @@ categoriesRouter.post('/', async (req, res) => {
 
 categoriesRouter.get('/', async (req, res) => {
   const user = req.user
-  const response = await Category.find({user: user._id}) 
+  const response = await Category.find({user: user._id})/* .populate('tasks') */
   if (!response) {
     return res.status(404).send({ error: 'No categories found' })
   }

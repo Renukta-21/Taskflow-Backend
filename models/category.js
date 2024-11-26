@@ -11,7 +11,7 @@ const categorySchema = new mongoose.Schema({
     },
     user:{
         required:true,
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref:'User'
     }, tasks:[{
         type:mongoose.Schema.Types.ObjectId,

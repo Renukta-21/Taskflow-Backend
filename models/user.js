@@ -15,8 +15,10 @@ const userSchema = new mongoose.Schema({
     email:{
         type:String,
         required:true
-    },tasks:[{
-        type:mongoose.Schema.Types.ObjectId
+    },
+    categories:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Category'
     }]
 })
 

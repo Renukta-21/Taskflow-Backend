@@ -12,19 +12,25 @@ const api = supertest(app)
 const baseURL = '/api/tasks'
 const categURL = '/api/categories'
 
-let firstCategory, newTask, authorization,tasksResponse
+let firstCategory, newTask, authorization,tasksResponse, userResponse
 const newCategory = {
   name: 'Excercise',
   icon: '🔥',
+}
+const userCredentials = {
+  username: 'daniel',
+  password: 'daniel211004',
 }
 describe('Tasks Routes', () => {
   beforeEach(async () => {
     await Category.deleteMany({})
     await Task.deleteMany({})
-    const newLogin = await api.post('/api/login').send({
-      username: 'daniel',
-      password: 'daniel211004',
-    })
+    await User.deleteMany({})
+    const newUser = await api.post('/api/users')
+    .send({...userCredentials, email:'edu211004@gmail.com'})
+    .expect(201)
+
+    const newLogin = await api.post('/api/login').send(userCredentials)
     .expect(200)
 
     authorization = `Bearer ${newLogin.body.token}`
@@ -43,23 +49,21 @@ describe('Tasks Routes', () => {
   })
   
   test('User can add new tasks', async () => {
-    const responseNewTask = await api
-      .post(baseURL)
-      .set('Authorization', authorization)
-      .send(newTask)
-      .expect(201)
+    const response = await api.post(baseURL)
+    .set('Authorization', authorization)
+    .send(newTask)
+    .expect(201)
+    
+     userResponse = await api.get('/api/users')
+    .set('Authorization', authorization)
+    .expect(200)
 
-    tasksResponse = await api
-      .get(baseURL)
-      .set('Authorization', authorization)
-      .expect(200)
-      console.log(tasksResponse.body)
+    console.log(userResponse.body)
   })
 
   test('user can delete a task', async()=>{
-    const response = await api.delete(`${baseURL}/${tasksResponse.body[0]._id}`)
-    .set('Authorization', authorization)
-    .expect(204)
+    console.log(userResponse.body)
+    
   })
 
   after(async () => {

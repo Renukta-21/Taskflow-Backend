@@ -1,5 +1,6 @@
 const categoriesRouter = require('express').Router()
 const Category = require('../models/category')
+const User = require('../models/user')
 require('express-async-errors')
 
 categoriesRouter.post('/', async (req, res) => {
@@ -12,12 +13,13 @@ categoriesRouter.post('/', async (req, res) => {
 
 categoriesRouter.get('/', async (req, res) => {
   const user = req.user
-  const categories = await Category.find({user: user._id})
-  if (!categories) {
+  const response = await User.findById(user._id).populate('categories')
+  if (!response) {
     return res.status(404).send({ error: 'No categories found' })
   }
-  res.status(200).send(categories)
+  res.status(200).send(response.categories)
 })
+
 categoriesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
   const result = await Category.findByIdAndDelete(id)

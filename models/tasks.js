@@ -27,6 +27,6 @@ const taskSchema = new mongoose.Schema({
         default:Date.now
     }
 })
-const Task = new mongoose.model('task', taskSchema)
+const Task = mongoose.model('Task', taskSchema)
 
 module.exports = Task

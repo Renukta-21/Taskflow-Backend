@@ -14,9 +14,10 @@ const categorySchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref:'User'
     }, tasks:[{
-        type:mongoose.Schema.Types.ObjectId
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Task'
     }]
 })
 
-const Category = new mongoose.model('category', categorySchema)
+const Category = mongoose.model('Category', categorySchema)
 module.exports = Category

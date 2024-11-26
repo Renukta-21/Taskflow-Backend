@@ -4,80 +4,90 @@ const supertest = require('supertest')
 const app = require('../app')
 const { default: mongoose } = require('mongoose')
 const Category = require('../models/category')
+const User = require('../models/user')
+const Task = require('../models/tasks')
 const api = supertest(app)
 
 const baseURL = '/api/categories'
-let firstCat, newLogin, authorization
-const firstCategory = {
-  name: 'Excercise',
-  icon: '🔥',
-}
 const newCategory = {
   name: 'Study',
   icon: '🔥',
 }
-
+const newUser = {
+  username: 'Daniel',
+  password: 'daniel211004',
+  email: 'edu211004@gmail.com',
+}
+let newUserResponse, loginUserResponse, authorization, firstCategory
 describe('Category Routes', () => {
   beforeEach(async () => {
     await Category.deleteMany({})
-    newLogin = await api.post('/api/login').send({
-      username: 'Daniel',
-      password: 'daniel211004',
-    })
-    .expect(200)
+    await User.deleteMany({})
+    await Task.deleteMany({})
+    newUserResponse = await api.post('/api/users').send(newUser).expect(201)
 
-    authorization = `Bearer ${newLogin.body.token}`
-  })
+    loginUserResponse = await api
+      .post('/api/login')
+      .send({ username: 'Daniel', password: 'daniel211004' })
+      .expect(200)
 
-  test('No duplicated categories allowed', async () => {
-    const response = await api
+    authorization = `Bearer ${loginUserResponse.body.token}`
+
+    firstCategory = await api
       .post(baseURL)
       .set('Authorization', authorization)
-      .send({ name: 'Excercise', icon: '🔥' })
-      .expect(201)
-      console.log(response.body)
-  })
-
-  /* test('Creates a new category successfully', async () => {
-    await api
-      .post(baseURL)
-      .set('Authorization', authoriz)
       .send(newCategory)
       .expect(201)
   })
 
   test('Category successfully eliminated', async () => {
-    await api
-      .delete(`${baseURL}/${firstCat._id}`)
-      .set('Authorization', authoriz)
+    const response = await api
+      .delete(`${baseURL}/${firstCategory.body._id}`)
+      .set('Authorization', authorization)
       .expect(204)
   })
   test('Returns 404 when deleting a non-existing category', async () => {
-    const response = await api
-      .post(baseURL)
-      .set('Authorization', authoriz)
-      .send(newCategory)
-      .expect(201)
-
-    await Category.findByIdAndDelete(response.body._id)
+    await Category.findByIdAndDelete(firstCategory.body._id)
     await api
-      .delete(`${baseURL}/${response.body._id}`)
-      .set('Authorization', authoriz)
+      .delete(`${baseURL}/${firstCategory.body._id}`)
+      .set('Authorization', authorization)
       .expect(404)
   })
-  test('Returns 400 if name is missing when creating a category', async () => {
-    const response = await api
-      .post(baseURL)
-      .set('Authorization', authoriz)
-      .send({ icon: '🔥' })
-      .expect(400)
 
-    assert.ok(
-      response.body.error.includes(
-        'category validation failed: name: Path `name` is required.'
-      )
-    )
-  }) */
+  test('new categories added succefully', async () => {
+    const newTasks = [
+      {
+        name: 'Homework',
+        icon: '🧠',
+      },
+      {
+        name: 'Excercise',
+        icon: '💪',
+      },
+    ]
+
+    await api.post(baseURL)
+    .set('Authorization', authorization)
+    .send(newTasks[0])
+    .expect(201)
+
+    await api.post(baseURL)
+    .set('Authorization', authorization)
+    .send(newTasks[1])
+    .expect(201)
+
+    const categoriesList = await api.get(baseURL)
+    .set('Authorization', authorization)
+    .expect(200)
+
+    console.log(categoriesList.body)
+  })
+
+  test('Adding tasks to Categories', async()=>{
+    const response = await api.post(baseURL)
+    .set('Authorization', authorization)
+    .send(newTask)
+  })
   after(async () => {
     await mongoose.connection.close()
   })

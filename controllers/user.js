@@ -20,8 +20,11 @@ userRouter.post('/', async(req,res)=>{
     await newUser.save()
     res.status(201).send(newUser)
 })
+
 userRouter.get('/', middleware.tokenExtractor,  async(req,res)=>{
-    const user = await User.findById(req.user._id).populate('tasks');
+    const user = await User.findById(req.user._id)
+    .populate('categories');
+
   if (!user) {
     return res.status(404).send({ error: 'User not found' });
   }

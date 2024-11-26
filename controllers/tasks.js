@@ -1,9 +1,10 @@
 const tasksRouter = require('express').Router()
+const Category = require('../models/category')
 const Task = require('../models/tasks')
 
 tasksRouter.get('/', async(req,res)=>{
     const user = req.user
-    const tasks = await Task.find({ user: user._id}).populate('user', {username:1, email:1})
+    const tasks = await Task.find({ user: user._id})/* .populate('user', {username:1, email:1}) */
     if(!tasks){
         return res.status(404).send({error: 'No user tasks found'})
     }
@@ -15,13 +16,12 @@ tasksRouter.post('/', async(req, res)=>{
     const user = req.user
     const newTask = new Task({user: user._id, title, description, completed, category})
     await newTask.save()
-    user.tasks = user.tasks.concat(newTask._id)
-    await user.save()
+    const categoryModel = await Category.findById(category)
+    categoryModel.tasks= categoryModel.tasks.concat(newTask._id)
+    categoryModel.save()
+    
 
-    res.status(201).send({
-        message: 'Tarea agregada exitosamente',
-        task: newTask
-    })
+    res.status(201).send(newTask)
 })
 
 tasksRouter.delete('/:id', async(req,res)=>{

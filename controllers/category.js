@@ -13,11 +13,11 @@ categoriesRouter.post('/', async (req, res) => {
 
 categoriesRouter.get('/', async (req, res) => {
   const user = req.user
-  const response = await User.findById(user._id).populate('categories')
+  const response = await Category.find({user: user._id}) 
   if (!response) {
     return res.status(404).send({ error: 'No categories found' })
   }
-  res.status(200).send(response.categories)
+  res.status(200).send(response)
 })
 
 categoriesRouter.delete('/:id', async (req, res) => {

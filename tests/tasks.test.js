@@ -41,7 +41,6 @@ describe('Tasks Routes', () => {
       .expect(201)
 
     newTask = {
-      user: 'jnjhbhg6tt62tgyrhdfdf',
       title: 'Jog',
       description: 'Jog 15km in 30 minutes',
       category: firstCategory.body._id
@@ -53,18 +52,18 @@ describe('Tasks Routes', () => {
     .set('Authorization', authorization)
     .send(newTask)
     .expect(201)
-    
-     userResponse = await api.get('/api/users')
+    console.log(response.body)
+     userResponse = await api.get(categURL)
     .set('Authorization', authorization)
     .expect(200)
 
     console.log(userResponse.body)
   })
 
-  test('user can delete a task', async()=>{
+  /* test('user can delete a task', async()=>{
     console.log(userResponse.body)
     
-  })
+  }) */
 
   after(async () => {
     await mongoose.connection.close()

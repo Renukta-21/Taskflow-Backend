@@ -1,1 +1,4 @@
-GET http://localhost:3001/api/hola
+GET http://localhost:3001/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmllbCIsInVzZXJJRCI6IjY3NDUzZmEwZWYyOTM1ZDA5NzhkYzQ5ZSIsImlhdCI6MTczMjU5MTkyNX0.S8leM1pmiR4tmK6NRShx2jBWxLL_ENUjfHOA0tBLHuE
+

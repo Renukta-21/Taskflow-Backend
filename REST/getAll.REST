@@ -1,4 +1,4 @@
 GET http://localhost:3001/api/categories
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbmllbCIsInVzZXJJRCI6IjY3NDU1NjU2MDJmYzRhOWYwNzJkMDk0NCIsImlhdCI6MTczMjU5NzQ3MH0.TNe8fIWQlSnpBZ0NY8CSVQ88tRzbKTgobkx-7nYM5IQ
+Authorization: Bearer 
 

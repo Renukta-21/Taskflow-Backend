@@ -34,9 +34,9 @@ const errorHandler = (err, req, res, next) => {
   console.log(err.message)
   if (err.code === 11000) {
     if (err.message.includes('username')) {
-      res.status(409).send('Username already taken')
-    } else if (err.message.includes('categories')) {
-      res.status(409).send({ error: 'Category already exists' })
+      res.status(409).send({error: 'Username already taken'})
+    } else{
+      res.status(409).send({ error: 'Duplication error' })
     }
   } else if (err.name === 'ValidationError') {
     res.status(400).send({ error: err.message })

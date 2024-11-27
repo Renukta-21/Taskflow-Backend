@@ -4,7 +4,7 @@ const Task = require('../models/tasks')
 
 tasksRouter.get('/', async(req,res)=>{
     const user = req.user
-    const tasks = await Task.find({ user: user._id})/* .populate('user', {username:1, email:1}) */
+    const tasks = await Task.find({ user: user._id}).populate('category')
     if(!tasks){
         return res.status(404).send({error: 'No user tasks found'})
     }

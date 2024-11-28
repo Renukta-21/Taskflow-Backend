@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    firstLogin:{
+        type:Boolean,
+        default:true
+    },
     categories:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Category'

@@ -5,7 +5,6 @@ const Category = require('../models/category');
 
 resetRouter.post('/', async (req, res) => {
   try {
-    // Eliminar todas las colecciones
     await User.deleteMany({});
     await Task.deleteMany({});
     await Category.deleteMany({});

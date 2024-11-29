@@ -36,7 +36,7 @@ const errorHandler = (err, req, res, next) => {
     if (err.message.includes('username')) {
       res.status(409).send({error: 'Username already taken'})
     } else{
-      res.status(409).send({ error: 'Duplication error' })
+      res.status(409).send({ error: 'Duplication error' + err })
     }
   } else if (err.name === 'ValidationError') {
     res.status(400).send({ error: err.message })

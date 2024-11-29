@@ -53,8 +53,9 @@ userRouter.get('/', middleware.tokenExtractor, async (req, res) => {
 })
 
 userRouter.put('/tutorial', middleware.tokenExtractor, async(req, res)=>{
-  const userData = req.body
-  const response = await User.findByIdAndUpdate(userData._id, {firstLogin:false}, {new:true})
+  const user = req.user
+  const {firstLogin} = req.body
+  const response = await User.findByIdAndUpdate(user._id, {firstLogin:false}, {new:true})
   if(!response){
     return res.status(404).send({error:'User not found'})
   } 

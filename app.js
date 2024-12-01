@@ -24,7 +24,7 @@ app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/categories',middleware.tokenExtractor, categoriesRouter, )
 app.use('/api/tasks', middleware.tokenExtractor, tasksRouter)
-app.use('/api/reset', resetRouter)
+app.use('/api/reset', middleware.tokenExtractor,resetRouter)
 
 app.use(middleware.errorHandler)
 

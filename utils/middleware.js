@@ -31,7 +31,7 @@ const tokenExtractor = async (req, res, next) => {
   next()
 }
 const errorHandler = (err, req, res, next) => {
-  console.log(err.message)
+  /* console.log(err.message) */
   if (err.code === 11000) {
     if (err.message.includes('username')) {
       res.status(409).send({error: 'Username already taken'})

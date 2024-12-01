@@ -1,6 +1,7 @@
 const tasksRouter = require('express').Router()
 const Category = require('../models/category')
 const Task = require('../models/tasks')
+require('express-async-errors')
 
 tasksRouter.get('/', async(req,res)=>{
     const user = req.user
@@ -25,10 +26,17 @@ tasksRouter.post('/', async(req, res)=>{
 
 tasksRouter.delete('/:id', async(req,res)=>{
     const {id} = req.params
-    const task = Task.findByIdAndDelete(id)
+    const task = await Task.findByIdAndDelete(id)
     if(!task){
         return res.status(404).send({error:'task not found'})
     }
-    res.send(204)
+    let category = await Category.findById(task.category)
+    if(!category){
+        return res.status(404).send({error:'category property not found'})
+    }
+    category.tasks = category.tasks.filter(t=> t.toString() !== task._id.toString())
+    await category.save()
+    
+    res.status(204).end()
 })
 module.exports = tasksRouter

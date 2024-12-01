@@ -24,18 +24,18 @@ userRouter.post('/', async (req, res) => {
   const defaultCategories = [
     {
       name: 'Home tasks',
-      icon: '🐥',
-      user:newUser._id
+      icon: '🛏️',
+      user:user._id
     },
     {
       name: 'Study',
-      icon: '💪',
-      user:newUser._id
+      icon: '🧠',
+      user:user._id
     },
     {
-      name: 'Meditation',
-      icon: '🐸',
-      user:newUser._id
+      name: 'Excercise',
+      icon: '🏋️‍♂️',
+      user:user._id
     },
   ]
 

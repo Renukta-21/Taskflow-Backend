@@ -11,7 +11,7 @@ const categoriesRouter = require('./controllers/category')
 const tasksRouter = require('./controllers/tasks')
 const resetRouter = require('./controllers/resetRouter')
 
-const connectionString = process.env.NODE_ENV === 'test' ? process.env.MONGO_URI : process.env.MONGO_URI_TEST
+const connectionString = process.env.NODE_ENV === 'test' ? process.env.MONGO_URI_TEST : process.env.MONGO_URI
 mongoose.connect(connectionString)
 .then(()=> console.log(`succesful connnection to ${connectionString}`))
 .catch((err)=> console.log(err))

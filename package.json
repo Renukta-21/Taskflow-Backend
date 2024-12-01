@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start":"cross-env NODE_ENV='production' node index.js",
     "test": "cross-env NODE_ENV='test' node --test",
     "dev": "cross-env NODE_ENV='test' nodemon index.js"
   },

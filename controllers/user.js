@@ -20,26 +20,26 @@ userRouter.post('/', async (req, res) => {
     email
   })
 
-  await newUser.save()
   const defaultCategories = [
     {
       name: 'Home tasks',
       icon: '🛏️',
-      user:user._id
+      user:newUser._id
     },
     {
       name: 'Study',
       icon: '🧠',
-      user:user._id
+      user:newUser._id
     },
     {
       name: 'Excercise',
       icon: '🏋️‍♂️',
-      user:user._id
+      user:newUser._id
     },
   ]
 
   await Category.insertMany(defaultCategories)
+  await newUser.save()
   res.status(201).send(newUser)
 })
 
